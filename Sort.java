@@ -19,7 +19,7 @@ public class Sort
 	 */
 	private static <T> IndexedUnsortedList<T> newList() 
 	{
-		return new WrappedDLL<T>(); //TODO: replace with your IUDoubleLinkedList for extra-credit
+		return new IUDoubleLinkedList<T>(); //TODO: replace with your IUDoubleLinkedList for extra-credit
 	}
 	
 	/**
@@ -69,7 +69,6 @@ public class Sort
 	 */
 	private static <T extends Comparable<T>> void mergesort(IndexedUnsortedList<T> list)
 	{
-		// TODO: Implement recursive mergesort algorithm 
 		int size = list.size();
 		ListIterator<T> listIter = list.listIterator();
 		if (list.size() <= 1)
@@ -117,6 +116,7 @@ public class Sort
 	{
 		int i = 0;
 		int j = 0;
+		if ()
 		while ((i < leftList.size()) && (j < rightList.size()))
 		{
 			if (leftList.first().compareTo(rightList.first()) < 0)
@@ -143,67 +143,46 @@ public class Sort
 		}
 		while (i < leftList.size())
 		{
-			if (leftList.size() > 1)
-			{
-				T tempElement = leftList.first();
-				leftList.removeFirst();
-				if (tempElement.compareTo(leftList.first()) < 0)
-				{
-					list.add(tempElement);
-				}
-				else if (tempElement.compareTo(leftList.first()) == 0)
-				{
-					list.add(tempElement);
-					list.add(leftList.first());
-					leftList.removeFirst();
-				}
-				else
-				{
-					list.add(leftList.first());
-					leftList.removeFirst();
-					leftList.addToFront(tempElement);
-				}
-			}
-			else
-			{
-				list.add(leftList.first());
-				leftList.removeFirst();
-			}
+			listMerge(list, leftList);
 			i++;
 		}
 		while (j < rightList.size())
 		{
-			if (rightList.size() > 1)
-			{
-				T tempElement = rightList.first();
-				rightList.removeFirst();
-				if (tempElement.compareTo(rightList.first()) < 0)
-				{
-					list.add(tempElement);
-				}
-				else if (tempElement.compareTo(rightList.first()) == 0)
-				{
-					list.add(tempElement);
-					list.add(rightList.first());
-					list.removeFirst();
-				}
-				else
-				{
-					list.add(rightList.first());
-					rightList.removeFirst();
-					rightList.addToFront(tempElement);
-				}
-			}
-			else
-			{
-				list.add(rightList.first());
-				rightList.removeFirst();
-			}
+			listMerge(list, rightList);
 			j++;
 		}
 
 	}
 
+	private static <T extends Comparable<T>> void listMerge(IndexedUnsortedList<T> list, IndexedUnsortedList<T> mergeList)
+	{
+		if (mergeList.size() == 2)
+		{
+			T tempElement = mergeList.first();
+			mergeList.removeFirst();
+			if (tempElement.compareTo(mergeList.first()) < 0)
+			{
+				list.add(tempElement);
+			}
+			else if (tempElement.compareTo(mergeList.first()) == 0)
+			{
+				list.add(tempElement);
+				list.add(mergeList.first());
+				mergeList.removeFirst();
+			}
+			else
+			{
+				list.add(mergeList.first());
+				mergeList.removeFirst();
+				mergeList.addToFront(tempElement);
+			}
+		}
+		else
+		{
+			list.add(mergeList.first());
+			mergeList.removeFirst();
+		}	
+	}
 		
 	/**
 	 * Mergesort algorithm to sort objects in a list 
@@ -218,9 +197,8 @@ public class Sort
 	 * @param c
 	 *            The Comparator used
 	 */
- 	private static <T> void mergesort(IndexedUnsortedList<T> list, Comparator<T> c)
+	private static <T> void mergesort(IndexedUnsortedList<T> list, Comparator<T> c)
 	{
-		// TODO: Implement recursive mergesort algorithm using Comparator
 		int size = list.size();
 		ListIterator<T> listIter = list.listIterator();
 		if (list.size() <= 1)
@@ -263,6 +241,7 @@ public class Sort
 			comparatorMerge(list, leftList, rightList, c);
 		}
 	}
+
 	private static <T> void comparatorMerge (IndexedUnsortedList<T> list, IndexedUnsortedList<T> leftList, IndexedUnsortedList<T> rightList, Comparator<T> c)
 	{
 		int i = 0;
@@ -293,15 +272,43 @@ public class Sort
 		}
 		while (i < leftList.size())
 		{
-			list.add(leftList.first());
-			leftList.removeFirst();
+			listMergeComparator(list, leftList, c);
 			i++;
 		}
 		while (j < rightList.size())
 		{
-			list.add(rightList.first());
-			rightList.removeFirst();
+			listMergeComparator(list, rightList, c);
 			j++;
+		}
+	}
+
+	private static <T> void listMergeComparator (IndexedUnsortedList<T> list, IndexedUnsortedList<T> mergeList, Comparator<T> c)
+	{
+		if (mergeList.size() == 2)
+		{
+			T tempElement = mergeList.first();
+			mergeList.removeFirst();
+			if (c.compare(tempElement, mergeList.first()) < 0)
+			{
+				list.add(tempElement);
+			}
+			else if (c.compare(tempElement, mergeList.first()) == 0)
+			{
+				list.add(tempElement);
+				list.add(mergeList.first());
+				mergeList.removeFirst();
+			}
+			else
+			{
+				list.add(mergeList.first());
+				mergeList.removeFirst();
+				mergeList.addToFront(tempElement);
+			}
+		}
+		else
+		{
+			list.add(mergeList.first());
+			mergeList.removeFirst();
 		}
 	}
 }
