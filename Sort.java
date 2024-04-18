@@ -143,14 +143,62 @@ public class Sort
 		}
 		while (i < leftList.size())
 		{
-			list.add(leftList.first());
-			leftList.removeFirst();
+			if (leftList.size() > 1)
+			{
+				T tempElement = leftList.first();
+				leftList.removeFirst();
+				if (tempElement.compareTo(leftList.first()) < 0)
+				{
+					list.add(tempElement);
+				}
+				else if (tempElement.compareTo(leftList.first()) == 0)
+				{
+					list.add(tempElement);
+					list.add(leftList.first());
+					leftList.removeFirst();
+				}
+				else
+				{
+					list.add(leftList.first());
+					leftList.removeFirst();
+					leftList.addToFront(tempElement);
+				}
+			}
+			else
+			{
+				list.add(leftList.first());
+				leftList.removeFirst();
+			}
 			i++;
 		}
 		while (j < rightList.size())
 		{
-			list.add(rightList.first());
-			rightList.removeFirst();
+			if (rightList.size() > 1)
+			{
+				T tempElement = rightList.first();
+				rightList.removeFirst();
+				if (tempElement.compareTo(rightList.first()) < 0)
+				{
+					list.add(tempElement);
+				}
+				else if (tempElement.compareTo(rightList.first()) == 0)
+				{
+					list.add(tempElement);
+					list.add(rightList.first());
+					list.removeFirst();
+				}
+				else
+				{
+					list.add(rightList.first());
+					rightList.removeFirst();
+					rightList.addToFront(tempElement);
+				}
+			}
+			else
+			{
+				list.add(rightList.first());
+				rightList.removeFirst();
+			}
 			j++;
 		}
 
